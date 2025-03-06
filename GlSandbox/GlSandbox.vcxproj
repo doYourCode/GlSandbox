@@ -104,7 +104,9 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)vendor\glfw\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\imgui;$(SolutionDir)vendor\glad\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)vendor\glfw\include;$(SolutionDir)vendor\glm;$(SolutionDir)vendor\imgui;$(SolutionDir)vendor\glad\include;$(SolutionDir)vendor\chaiscript\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -129,24 +131,36 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\vendor\glad\src\glad.c" />
+    <ClCompile Include="..\vendor\imgui\backends\imgui_impl_glfw.cpp" />
+    <ClCompile Include="..\vendor\imgui\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="..\vendor\imgui\imgui.cpp" />
     <ClCompile Include="..\vendor\imgui\imgui_demo.cpp" />
     <ClCompile Include="..\vendor\imgui\imgui_draw.cpp" />
     <ClCompile Include="..\vendor\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\vendor\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Sandbox\Utils\Script\ChaiScriptImpl.cpp" />
+    <ClCompile Include="Log\loguru.cpp" />
     <ClCompile Include="SandboxApp.cpp" />
     <ClCompile Include="Sandbox\Engine\ApplicationInterface.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Log\Terminal.cpp" />
+    <ClCompile Include="Sandbox\Utils\Script\ChaiScriptGlm.hpp" />
+    <ClCompile Include="Sandbox\Utils\Script\SetGlmTypes.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\vendor\imgui\backends\imgui_impl_glfw.h" />
+    <ClInclude Include="..\vendor\imgui\backends\imgui_impl_opengl3.h" />
     <ClInclude Include="..\vendor\imgui\imconfig.h" />
     <ClInclude Include="..\vendor\imgui\imgui.h" />
     <ClInclude Include="..\vendor\imgui\imgui_internal.h" />
     <ClInclude Include="..\vendor\imgui\imstb_rectpack.h" />
     <ClInclude Include="..\vendor\imgui\imstb_textedit.h" />
     <ClInclude Include="..\vendor\imgui\imstb_truetype.h" />
+    <ClInclude Include="Log\loguru.hpp" />
     <ClInclude Include="SandboxApp.h" />
     <ClInclude Include="Sandbox\Engine\ApplicationInterface.h" />
+    <ClInclude Include="Log\Terminal.h" />
+    <ClInclude Include="Sandbox\Utils\Script\SetLogFunctions.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\vendor\glfw\src\glfw.vcxproj">

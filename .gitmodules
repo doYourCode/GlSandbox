@@ -7,3 +7,6 @@
 [submodule "vendor/imgui"]
 	path = vendor/imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule "vendor/chaiscript"]
+	path = vendor/chaiscript
+	url = https://github.com/ChaiScript/ChaiScript.git

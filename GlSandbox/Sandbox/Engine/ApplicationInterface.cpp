@@ -10,8 +10,6 @@ void ApplicationInterface::Run()
     // Main loop variables
     float lastFrameTime = 0.0f;
 
-    OnInit();
-
     // Main loop
     while (m_Running && !glfwWindowShouldClose(m_Window)) {
         // Calculate delta time

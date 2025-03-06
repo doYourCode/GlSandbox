@@ -105,7 +105,7 @@ public:
     /**
      * @brief Stops the application by setting the running flag to false.
      */
-    inline void Stop() { m_Running = false; }
+    inline void Exit() { m_Running = false; }
 
 
 protected:

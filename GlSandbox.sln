@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "vendor", "vendor", "{6BB596
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "glfw", "vendor\glfw\src\glfw.vcxproj", "{F6C11A0A-627C-3C90-B07D-EF5F3383F8CF}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "chai", "vendor\chaiscript\chai.vcxproj", "{30FCCB25-21FC-329C-92A4-07EFFABCA21A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -33,11 +35,20 @@ Global
 		{F6C11A0A-627C-3C90-B07D-EF5F3383F8CF}.Release|x64.Build.0 = Release|x64
 		{F6C11A0A-627C-3C90-B07D-EF5F3383F8CF}.Release|x86.ActiveCfg = Release|x64
 		{F6C11A0A-627C-3C90-B07D-EF5F3383F8CF}.Release|x86.Build.0 = Release|x64
+		{30FCCB25-21FC-329C-92A4-07EFFABCA21A}.Debug|x64.ActiveCfg = Debug|x64
+		{30FCCB25-21FC-329C-92A4-07EFFABCA21A}.Debug|x64.Build.0 = Debug|x64
+		{30FCCB25-21FC-329C-92A4-07EFFABCA21A}.Debug|x86.ActiveCfg = Debug|x64
+		{30FCCB25-21FC-329C-92A4-07EFFABCA21A}.Debug|x86.Build.0 = Debug|x64
+		{30FCCB25-21FC-329C-92A4-07EFFABCA21A}.Release|x64.ActiveCfg = Release|x64
+		{30FCCB25-21FC-329C-92A4-07EFFABCA21A}.Release|x64.Build.0 = Release|x64
+		{30FCCB25-21FC-329C-92A4-07EFFABCA21A}.Release|x86.ActiveCfg = Release|x64
+		{30FCCB25-21FC-329C-92A4-07EFFABCA21A}.Release|x86.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F6C11A0A-627C-3C90-B07D-EF5F3383F8CF} = {6BB596DB-41AD-408E-B78E-FA9F4A979AE7}
+		{30FCCB25-21FC-329C-92A4-07EFFABCA21A} = {6BB596DB-41AD-408E-B78E-FA9F4A979AE7}
 	EndGlobalSection
 EndGlobal
