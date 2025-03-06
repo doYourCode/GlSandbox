@@ -2,6 +2,7 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #define GLM_FORCE_SWIZZLE
 #include <glm/glm.hpp>
+#include <glm/gtc/constants.hpp>
 #include <glm/gtc/quaternion.hpp>
 #include <chaiscript/chaiscript.hpp>
 #include <string>
@@ -9,13 +10,38 @@
 #include "../../../Log/loguru.hpp"
 #include <glm/gtx/string_cast.hpp>
 
-using namespace chaiscript;
-using namespace glm;
-using namespace std;
+inline void SetGlmTypes(chaiscript::ChaiScript* chaiscript);
 
-inline void SetGlmTypes(ChaiScript* chaiscript);
+inline void SetGlmConstants(chaiscript::ChaiScript* chaiscript)
+{
+	chaiscript->add(chaiscript::fun(&glm::e<float>), "e");
+	chaiscript->add(chaiscript::fun(&glm::epsilon<float>), "epsilon");
+	chaiscript->add(chaiscript::fun(&glm::euler<float>), "euler");
+	chaiscript->add(chaiscript::fun(&glm::golden_ratio<float>), "golden_ratio");
+	chaiscript->add(chaiscript::fun(&glm::half_pi<float>), "half_pi");
+	chaiscript->add(chaiscript::fun(&glm::ln_ln_two<float>), "ln_ln_two");
+	chaiscript->add(chaiscript::fun(&glm::ln_ten<float>), "ln_ten");
+	chaiscript->add(chaiscript::fun(&glm::ln_two<float>), "ln_two");
+	chaiscript->add(chaiscript::fun(&glm::one<float>), "one");
+	chaiscript->add(chaiscript::fun(&glm::one_over_pi<float>), "one_over_pi");
+	chaiscript->add(chaiscript::fun(&glm::one_over_root_two<float>), "one_over_root_two");
+	chaiscript->add(chaiscript::fun(&glm::pi<float>), "pi");
+	chaiscript->add(chaiscript::fun(&glm::quarter_pi<float>), "quarter_pi");
+	chaiscript->add(chaiscript::fun(&glm::root_five<float>), "root_five");
+	chaiscript->add(chaiscript::fun(&glm::root_half_pi<float>), "root_half_pi");
+	chaiscript->add(chaiscript::fun(&glm::root_ln_four<float>), "root_ln_four");
+	chaiscript->add(chaiscript::fun(&glm::root_pi<float>), "root_pi");
+	chaiscript->add(chaiscript::fun(&glm::root_three<float>), "root_three");
+	chaiscript->add(chaiscript::fun(&glm::root_two<float>), "root_two");
+	chaiscript->add(chaiscript::fun(&glm::root_two_pi<float>), "root_two_pi");
+	chaiscript->add(chaiscript::fun(&glm::third<float>), "third");
+	chaiscript->add(chaiscript::fun(&glm::two_over_pi<float>), "two_over_pi");
+	chaiscript->add(chaiscript::fun(&glm::two_over_root_pi<float>), "two_over_root_pi");
+	chaiscript->add(chaiscript::fun(&glm::two_thirds<float>), "two_thirds");
+	chaiscript->add(chaiscript::fun(&glm::zero<float>), "zero");
+}
 
-inline void SetScalar(ChaiScript* chaiscript)
+inline void SetScalar(chaiscript::ChaiScript* chaiscript)
 {
 	////scalar
 	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::max)), "max");
@@ -63,18 +89,9 @@ inline void SetScalar(ChaiScript* chaiscript)
 	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float, float)>(&glm::clamp)), "clamp");
 	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float, float)>(&glm::mix)), "mix");
 	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::dot)), "dot");
-	// Pi related
-	chaiscript->add(chaiscript::fun(&glm::pi<float>), "pi");
-	chaiscript->add(chaiscript::fun(&glm::pi<float>), "half_tau");
-	chaiscript->add(chaiscript::fun(&glm::half_pi<float>), "half_pi");
-	chaiscript->add(chaiscript::fun(&glm::half_pi<float>), "quarter_tau");
-	chaiscript->add(chaiscript::fun(&glm::two_pi<float>), "two_pi");
-	chaiscript->add(chaiscript::fun(&glm::two_pi<float>), "tau");
-	chaiscript->add(chaiscript::fun(&glm::three_over_two_pi<float>), "three_over_two_pi");
-	chaiscript->add(chaiscript::fun(&glm::quarter_pi<float>), "quarter_pi");
 }
 
-inline void SetVec2(ChaiScript* chaiscript)
+inline void SetVec2(chaiscript::ChaiScript* chaiscript)
 {
 	// vec2
 	chaiscript->add(chaiscript::user_type<glm::vec2>(), "vec2");
@@ -107,57 +124,51 @@ inline void SetVec2(ChaiScript* chaiscript)
 	// Equality check operators
 	chaiscript->add(chaiscript::fun([](const glm::vec2& a, const glm::vec2& b) { return all(glm::equal(a, b)); }), "==");
 	chaiscript->add(chaiscript::fun([](const glm::vec2& a, const glm::vec2& b) { return all(glm::notEqual(a, b)); }), "!=");
-	chaiscript->add(fun(static_cast<bvec2(*)(const vec2&, const vec2&)>(equal)), "equal");
-	chaiscript->add(fun(static_cast<bvec2(*)(const vec2&, const vec2&)>(notEqual)), "notEqual");
+	chaiscript->add(chaiscript::fun(static_cast<glm::bvec2(*)(const glm::vec2&, const glm::vec2&)>(&glm::equal)), "equal");
+	chaiscript->add(chaiscript::fun(static_cast<glm::bvec2(*)(const glm::vec2&, const glm::vec2&)>(&glm::notEqual)), "notEqual");
 
 	// Comparison operators
 	chaiscript->add(chaiscript::fun([](const glm::vec2& a, const glm::vec2& b) { return all(glm::greaterThan(a, b)); }), ">");
 	chaiscript->add(chaiscript::fun([](const glm::vec2& a, const glm::vec2& b) { return all(glm::greaterThanEqual(a, b)); }), ">=");
-	chaiscript->add(fun(static_cast<bvec2(*)(const vec2&, const vec2&)>(greaterThan)), "greaterThan");
-	chaiscript->add(fun(static_cast<bvec2(*)(const vec2&, const vec2&)>(greaterThanEqual)), "greaterThanEqual");
-	chaiscript->add(chaiscript::fun([](const glm::vec2& a, const glm::vec2& b) { return all(glm::lessThan(a, b)); }), "<");
-	chaiscript->add(chaiscript::fun([](const glm::vec2& a, const glm::vec2& b) { return all(glm::lessThanEqual(a, b)); }), "<=");
-	chaiscript->add(fun(static_cast<bvec2(*)(const vec2&, const vec2&)>(lessThan)), "lessThan");
-	chaiscript->add(fun(static_cast<bvec2(*)(const vec2&, const vec2&)>(lessThanEqual)), "lessThanEqual");
+	chaiscript->add(chaiscript::fun(static_cast<glm::bvec2(*)(const glm::vec2&, const glm::vec2&)>(&glm::greaterThan)), "greaterThan");
+	chaiscript->add(chaiscript::fun(static_cast<glm::bvec2(*)(const glm::vec2&, const glm::vec2&)>(&glm::greaterThanEqual)), "greaterThanEqual");
+	chaiscript->add(chaiscript::fun([](const glm::vec2& a, const glm::vec2& b) { return glm::all(glm::lessThan(a, b)); }), "<");
+	chaiscript->add(chaiscript::fun([](const glm::vec2& a, const glm::vec2& b) { return glm::all(glm::lessThanEqual(a, b)); }), "<=");
+	chaiscript->add(chaiscript::fun(static_cast<glm::bvec2(*)(const glm::vec2&, const glm::vec2&)>(&glm::lessThan)), "lessThan");
+	chaiscript->add(chaiscript::fun(static_cast<glm::bvec2(*)(const glm::vec2&, const glm::vec2&)>(&glm::lessThanEqual)), "lessThanEqual");
 
 	// Available glm functions
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::vec2&)>(glm::length)), "length");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::vec2&, const glm::vec2&)>(glm::distance)), "distance");
-	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&)>(glm::normalize)), "normalize");
-	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&, const glm::vec2&)>(glm::reflect)), "reflect");
-	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&, const glm::vec2&, float)>(glm::refract)), "refract");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::vec2&, const glm::vec2&)>(glm::dot)), "dot");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::vec2&)>(&glm::length)), "length");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::vec2&, const glm::vec2&)>(&glm::distance)), "distance");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&)>(&glm::normalize)), "normalize");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&, const glm::vec2&)>(&glm::reflect)), "reflect");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&, const glm::vec2&, float)>(&glm::refract)), "refract");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::vec2&, const glm::vec2&)>(&glm::dot)), "dot");
 
 	// Component wise functions
-	chaiscript->add(fun(static_cast<vec2(*)(const vec2&)>(abs)), "abs");
-	chaiscript->add(fun(static_cast<vec2(*)(const vec2&)>(sign)), "sign");
-	chaiscript->add(fun(static_cast<vec2(*)(const vec2&)>(floor)), "floor");
-	chaiscript->add(fun(static_cast<vec2(*)(const vec2&)>(ceil)), "ceil");
-	chaiscript->add(fun(static_cast<vec2(*)(const vec2&)>(round)), "round");
-	chaiscript->add(fun(static_cast<vec2(*)(const vec2&)>(fract)), "fract");
-	chaiscript->add(fun(static_cast<vec2(*)(const vec2&, const vec2&, const vec2&)>(fma)), "fma");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&)>(&glm::abs)), "abs");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&)>(&glm::sign)), "sign");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&)>(&glm::floor)), "floor");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&)>(&glm::ceil)), "ceil");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&)>(&glm::round)), "round");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&)>(&glm::fract)), "fract");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&, const glm::vec2&, const glm::vec2&)>(&glm::fma)), "fma");
 
-	chaiscript->add(fun(static_cast<vec2(*)(const vec2&, const vec2&)>(min)), "min");
-	chaiscript->add(fun(static_cast<vec2(*)(const vec2&, float)>(min)), "min");
-	chaiscript->add(fun(static_cast<vec2(*)(const vec2&, const vec2&)>(max)), "max");
-	chaiscript->add(fun(static_cast<vec2(*)(const vec2&, float)>(max)), "max");
-	chaiscript->add(fun(static_cast<vec2(*)(const vec2&, const vec2&)>(mod)), "mod");
-	chaiscript->add(fun(static_cast<vec2(*)(const vec2&, float)>(mod)), "mod");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&, const glm::vec2&)>(&glm::min)), "min");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&, float)>(&glm::min)), "min");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&, const glm::vec2&)>(&glm::max)), "max");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&, float)>(&glm::max)), "max");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&, const glm::vec2&)>(&glm::mod)), "mod");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&, float)>(&glm::mod)), "mod");
 
-	chaiscript->add(fun(static_cast<vec2(*)(const vec2&, const vec2&, const vec2&)>(clamp)), "clamp");
-	chaiscript->add(fun(static_cast<vec2(*)(const vec2&, float, float)>(clamp)), "clamp");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&, const glm::vec2&, const glm::vec2&)>(&glm::clamp)), "clamp");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&, float, float)>(&glm::clamp)), "clamp");
 
-	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&, const glm::vec2&, const glm::vec2&)>(glm::mix)), "mix");
-	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&, const glm::vec2&, float)>(glm::mix)), "mix");
-	
-	// Convert to string
-	chaiscript->add(chaiscript::fun([](const glm::vec2& v) -> std::string { return "vec2("
-		+ std::to_string(v.x) + ", "
-		+ std::to_string(v.y) + ")"; }),
-		"to_string");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&, const glm::vec2&, const glm::vec2&)>(&glm::mix)), "mix");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec2(*)(const glm::vec2&, const glm::vec2&, float)>(&glm::mix)), "mix");
 }
 
-inline void SetVec3(ChaiScript* chaiscript)
+inline void SetVec3(chaiscript::ChaiScript* chaiscript)
 {
 	// vec3
 	chaiscript->add(chaiscript::user_type<glm::vec3>(), "vec3");
@@ -189,61 +200,54 @@ inline void SetVec3(ChaiScript* chaiscript)
 	chaiscript->add(chaiscript::fun([](const glm::vec3& v, float scalar) { return v / scalar; }), "/");
 
 	// Equality check operators
-	chaiscript->add(chaiscript::fun([](const glm::vec3& a, const glm::vec3& b) { return all(glm::equal(a, b)); }), "==");
-	chaiscript->add(chaiscript::fun([](const glm::vec3& a, const glm::vec3& b) { return all(glm::notEqual(a, b)); }), "!=");
-	chaiscript->add(fun(static_cast<bvec3(*)(const vec3&, const vec3&)>(equal)), "equal");
-	chaiscript->add(fun(static_cast<bvec3(*)(const vec3&, const vec3&)>(notEqual)), "notEqual");
+	chaiscript->add(chaiscript::fun([](const glm::vec3& a, const glm::vec3& b) { return glm::all(glm::equal(a, b)); }), "==");
+	chaiscript->add(chaiscript::fun([](const glm::vec3& a, const glm::vec3& b) { return glm::all(glm::notEqual(a, b)); }), "!=");
+	chaiscript->add(chaiscript::fun(static_cast<glm::bvec3(*)(const glm::vec3&, const glm::vec3&)>(&glm::equal)), "equal");
+	chaiscript->add(chaiscript::fun(static_cast<glm::bvec3(*)(const glm::vec3&, const glm::vec3&)>(&glm::notEqual)), "notEqual");
 
 	// Comparison operators
-	chaiscript->add(chaiscript::fun([](const glm::vec3& a, const glm::vec3& b) { return all(glm::greaterThan(a, b)); }), ">");
-	chaiscript->add(chaiscript::fun([](const glm::vec3& a, const glm::vec3& b) { return all(glm::greaterThanEqual(a, b)); }), ">=");
-	chaiscript->add(fun(static_cast<bvec3(*)(const vec3&, const vec3&)>(greaterThan)), "greaterThan");
-	chaiscript->add(fun(static_cast<bvec3(*)(const vec3&, const vec3&)>(greaterThanEqual)), "greaterThanEqual");
-	chaiscript->add(chaiscript::fun([](const glm::vec3& a, const glm::vec3& b) { return all(glm::lessThan(a, b)); }), "<");
-	chaiscript->add(chaiscript::fun([](const glm::vec3& a, const glm::vec3& b) { return all(glm::lessThanEqual(a, b)); }), "<=");
-	chaiscript->add(fun(static_cast<bvec3(*)(const vec3&, const vec3&)>(lessThan)), "lessThan");
-	chaiscript->add(fun(static_cast<bvec3(*)(const vec3&, const vec3&)>(lessThanEqual)), "lessThanEqual");
+	chaiscript->add(chaiscript::fun([](const glm::vec3& a, const glm::vec3& b) { return glm::all(glm::greaterThan(a, b)); }), ">");
+	chaiscript->add(chaiscript::fun([](const glm::vec3& a, const glm::vec3& b) { return glm::all(glm::greaterThanEqual(a, b)); }), ">=");
+	chaiscript->add(chaiscript::fun(static_cast<glm::bvec3(*)(const glm::vec3&, const glm::vec3&)>(&glm::greaterThan)), "greaterThan");
+	chaiscript->add(chaiscript::fun(static_cast<glm::bvec3(*)(const glm::vec3&, const glm::vec3&)>(&glm::greaterThanEqual)), "greaterThanEqual");
+	chaiscript->add(chaiscript::fun([](const glm::vec3& a, const glm::vec3& b) { return glm::all(glm::lessThan(a, b)); }), "<");
+	chaiscript->add(chaiscript::fun([](const glm::vec3& a, const glm::vec3& b) { return glm::all(glm::lessThanEqual(a, b)); }), "<=");
+	chaiscript->add(chaiscript::fun(static_cast<glm::bvec3(*)(const glm::vec3&, const glm::vec3&)>(&glm::lessThan)), "lessThan");
+	chaiscript->add(chaiscript::fun(static_cast<glm::bvec3(*)(const glm::vec3&, const glm::vec3&)>(&glm::lessThanEqual)), "lessThanEqual");
 
 	// Available glm functions
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::vec3&)>(glm::length)), "length");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::vec3&, const glm::vec3&)>(glm::distance)), "distance");
-	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&)>(glm::normalize)), "normalize");
-	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&, const glm::vec3&)>(glm::reflect)), "reflect");
-	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&, const glm::vec3&, float)>(glm::refract)), "refract");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::vec3&, const glm::vec3&)>(glm::dot)), "dot");
-	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&, const glm::vec3&)>(glm::cross)), "cross"); // Specific to vec3
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::vec3&)>(&glm::length)), "length");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::vec3&, const glm::vec3&)>(&glm::distance)), "distance");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&)>(&glm::normalize)), "normalize");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&, const glm::vec3&)>(&glm::reflect)), "reflect");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&, const glm::vec3&, float)>(&glm::refract)), "refract");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::vec3&, const glm::vec3&)>(&glm::dot)), "dot");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&, const glm::vec3&)>(&glm::cross)), "cross"); // Specific to vec3
 
 	// Component wise functions
-	chaiscript->add(fun(static_cast<vec3(*)(const vec3&)>(abs)), "abs");
-	chaiscript->add(fun(static_cast<vec3(*)(const vec3&)>(sign)), "sign");
-	chaiscript->add(fun(static_cast<vec3(*)(const vec3&)>(floor)), "floor");
-	chaiscript->add(fun(static_cast<vec3(*)(const vec3&)>(ceil)), "ceil");
-	chaiscript->add(fun(static_cast<vec3(*)(const vec3&)>(round)), "round");
-	chaiscript->add(fun(static_cast<vec3(*)(const vec3&)>(fract)), "fract");
-	chaiscript->add(fun(static_cast<vec3(*)(const vec3&, const vec3&, const vec3&)>(fma)), "fma");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&)>(&glm::abs)), "abs");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&)>(&glm::sign)), "sign");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&)>(&glm::floor)), "floor");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&)>(&glm::ceil)), "ceil");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&)>(&glm::round)), "round");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&)>(&glm::fract)), "fract");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&, const glm::vec3&, const glm::vec3&)>(&glm::fma)), "fma");
 
-	chaiscript->add(fun(static_cast<vec3(*)(const vec3&, const vec3&)>(min)), "min");
-	chaiscript->add(fun(static_cast<vec3(*)(const vec3&, float)>(min)), "min");
-	chaiscript->add(fun(static_cast<vec3(*)(const vec3&, const vec3&)>(max)), "max");
-	chaiscript->add(fun(static_cast<vec3(*)(const vec3&, float)>(max)), "max");
-	chaiscript->add(fun(static_cast<vec3(*)(const vec3&, const vec3&)>(mod)), "mod");
-	chaiscript->add(fun(static_cast<vec3(*)(const vec3&, float)>(mod)), "mod");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&, const glm::vec3&)>(&glm::min)), "min");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&, float)>(&glm::min)), "min");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&, const glm::vec3&)>(&glm::max)), "max");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&, float)>(&glm::max)), "max");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&, const glm::vec3&)>(&glm::mod)), "mod");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&, float)>(&glm::mod)), "mod");
 
-	chaiscript->add(fun(static_cast<vec3(*)(const vec3&, const vec3&, const vec3&)>(clamp)), "clamp");
-	chaiscript->add(fun(static_cast<vec3(*)(const vec3&, float, float)>(clamp)), "clamp");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&, const glm::vec3&, const glm::vec3&)>(&glm::clamp)), "clamp");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&, float, float)>(&glm::clamp)), "clamp");
 
-	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&, const glm::vec3&, const glm::vec3&)>(glm::mix)), "mix");
-	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&, const glm::vec3&, float)>(glm::mix)), "mix");
-
-	// Convert to string
-	chaiscript->add(chaiscript::fun([](const glm::vec3& v) -> std::string { return "vec3("
-		+ std::to_string(v.x) + ", "
-		+ std::to_string(v.y) + ", "
-		+ std::to_string(v.z) + ")"; }),
-		"to_string");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&, const glm::vec3&, const glm::vec3&)>(&glm::mix)), "mix");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&, const glm::vec3&, float)>(&glm::mix)), "mix");
 }
 
-inline void SetVec4(ChaiScript* chaiscript)
+inline void SetVec4(chaiscript::ChaiScript* chaiscript)
 {
 	// vec4
 	chaiscript->add(chaiscript::user_type<glm::vec4>(), "vec4");
@@ -278,59 +282,51 @@ inline void SetVec4(ChaiScript* chaiscript)
 	// Equality check operators
 	chaiscript->add(chaiscript::fun([](const glm::vec4& a, const glm::vec4& b) { return all(glm::equal(a, b)); }), "==");
 	chaiscript->add(chaiscript::fun([](const glm::vec4& a, const glm::vec4& b) { return all(glm::notEqual(a, b)); }), "!=");
-	chaiscript->add(fun(static_cast<bvec4(*)(const vec4&, const vec4&)>(equal)), "equal");
-	chaiscript->add(fun(static_cast<bvec4(*)(const vec4&, const vec4&)>(notEqual)), "notEqual");
+	chaiscript->add(chaiscript::fun(static_cast<glm::bvec4(*)(const glm::vec4&, const glm::vec4&)>(&glm::equal)), "equal");
+	chaiscript->add(chaiscript::fun(static_cast<glm::bvec4(*)(const glm::vec4&, const glm::vec4&)>(&glm::notEqual)), "notEqual");
 
 	// Comparison operators
-	chaiscript->add(chaiscript::fun([](const glm::vec4& a, const glm::vec4& b) { return all(glm::greaterThan(a, b)); }), ">");
-	chaiscript->add(chaiscript::fun([](const glm::vec4& a, const glm::vec4& b) { return all(glm::greaterThanEqual(a, b)); }), ">=");
-	chaiscript->add(fun(static_cast<bvec4(*)(const vec4&, const vec4&)>(greaterThan)), "greaterThan");
-	chaiscript->add(fun(static_cast<bvec4(*)(const vec4&, const vec4&)>(greaterThanEqual)), "greaterThanEqual");
-	chaiscript->add(chaiscript::fun([](const glm::vec4& a, const glm::vec4& b) { return all(glm::lessThan(a, b)); }), "<");
-	chaiscript->add(chaiscript::fun([](const glm::vec4& a, const glm::vec4& b) { return all(glm::lessThanEqual(a, b)); }), "<=");
-	chaiscript->add(fun(static_cast<bvec4(*)(const vec4&, const vec4&)>(lessThan)), "lessThan");
-	chaiscript->add(fun(static_cast<bvec4(*)(const vec4&, const vec4&)>(lessThanEqual)), "lessThanEqual");
+	chaiscript->add(chaiscript::fun([](const glm::vec4& a, const glm::vec4& b) { return glm::all(glm::greaterThan(a, b)); }), ">");
+	chaiscript->add(chaiscript::fun([](const glm::vec4& a, const glm::vec4& b) { return glm::all(glm::greaterThanEqual(a, b)); }), ">=");
+	chaiscript->add(chaiscript::fun(static_cast<glm::bvec4(*)(const glm::vec4&, const glm::vec4&)>(&glm::greaterThan)), "greaterThan");
+	chaiscript->add(chaiscript::fun(static_cast<glm::bvec4(*)(const glm::vec4&, const glm::vec4&)>(&glm::greaterThanEqual)), "greaterThanEqual");
+	chaiscript->add(chaiscript::fun([](const glm::vec4& a, const glm::vec4& b) { return glm::all(glm::lessThan(a, b)); }), "<");
+	chaiscript->add(chaiscript::fun([](const glm::vec4& a, const glm::vec4& b) { return glm::all(glm::lessThanEqual(a, b)); }), "<=");
+	chaiscript->add(chaiscript::fun(static_cast<glm::bvec4(*)(const glm::vec4&, const glm::vec4&)>(&glm::lessThan)), "lessThan");
+	chaiscript->add(chaiscript::fun(static_cast<glm::bvec4(*)(const glm::vec4&, const glm::vec4&)>(&glm::lessThanEqual)), "lessThanEqual");
 
 	// Available glm functions
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::vec4&)>(glm::length)), "length");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::vec4&, const glm::vec4&)>(glm::distance)), "distance");
-	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&)>(glm::normalize)), "normalize");
-	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&, const glm::vec4&)>(glm::reflect)), "reflect");
-	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&, const glm::vec4&, float)>(glm::refract)), "refract");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::vec4&, const glm::vec4&)>(glm::dot)), "dot");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::vec4&)>(&glm::length)), "length");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::vec4&, const glm::vec4&)>(&glm::distance)), "distance");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&)>(&glm::normalize)), "normalize");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&, const glm::vec4&)>(&glm::reflect)), "reflect");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&, const glm::vec4&, float)>(&glm::refract)), "refract");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::vec4&, const glm::vec4&)>(&glm::dot)), "dot");
 
 	// Component wise functions
-	chaiscript->add(fun(static_cast<vec4(*)(const vec4&)>(abs)), "abs");
-	chaiscript->add(fun(static_cast<vec4(*)(const vec4&)>(sign)), "sign");
-	chaiscript->add(fun(static_cast<vec4(*)(const vec4&)>(floor)), "floor");
-	chaiscript->add(fun(static_cast<vec4(*)(const vec4&)>(ceil)), "ceil");
-	chaiscript->add(fun(static_cast<vec4(*)(const vec4&)>(round)), "round");
-	chaiscript->add(fun(static_cast<vec4(*)(const vec4&)>(fract)), "fract");
-	chaiscript->add(fun(static_cast<vec4(*)(const vec4&, const vec4&, const vec4&)>(fma)), "fma");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&)>(&glm::abs)), "abs");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&)>(&glm::sign)), "sign");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&)>(&glm::floor)), "floor");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&)>(&glm::ceil)), "ceil");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&)>(&glm::round)), "round");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&)>(&glm::fract)), "fract");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&, const glm::vec4&, const glm::vec4&)>(&glm::fma)), "fma");
 
-	chaiscript->add(fun(static_cast<vec4(*)(const vec4&, const vec4&)>(min)), "min");
-	chaiscript->add(fun(static_cast<vec4(*)(const vec4&, float)>(min)), "min");
-	chaiscript->add(fun(static_cast<vec4(*)(const vec4&, const vec4&)>(max)), "max");
-	chaiscript->add(fun(static_cast<vec4(*)(const vec4&, float)>(max)), "max");
-	chaiscript->add(fun(static_cast<vec4(*)(const vec4&, const vec4&)>(mod)), "mod");
-	chaiscript->add(fun(static_cast<vec4(*)(const vec4&, float)>(mod)), "mod");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&, const glm::vec4&)>(&glm::min)), "min");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&, float)>(&glm::min)), "min");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&, const glm::vec4&)>(&glm::max)), "max");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&, float)>(&glm::max)), "max");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&, const glm::vec4&)>(&glm::mod)), "mod");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&, float)>(&glm::mod)), "mod");
 
-	chaiscript->add(fun(static_cast<vec4(*)(const vec4&, const vec4&, const vec4&)>(clamp)), "clamp");
-	chaiscript->add(fun(static_cast<vec4(*)(const vec4&, float, float)>(clamp)), "clamp");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&, const glm::vec4&, const glm::vec4&)>(&glm::clamp)), "clamp");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&, float, float)>(&glm::clamp)), "clamp");
 
-	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&, const glm::vec4&, const glm::vec4&)>(glm::mix)), "mix");
-	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&, const glm::vec4&, float)>(glm::mix)), "mix");
-
-	// Convert to string
-	chaiscript->add(chaiscript::fun([](const glm::vec4& v) -> std::string { return "vec4("
-		+ std::to_string(v.x) + ", "
-		+ std::to_string(v.y) + ", "
-		+ std::to_string(v.z) + ", "
-		+ std::to_string(v.w) + ")"; }),
-		"to_string");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&, const glm::vec4&, const glm::vec4&)>(&glm::mix)), "mix");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec4(*)(const glm::vec4&, const glm::vec4&, float)>(&glm::mix)), "mix");
 }
 
-inline void SetQuat(ChaiScript* chaiscript)
+inline void SetQuat(chaiscript::ChaiScript* chaiscript)
 {
 	// quat
 	chaiscript->add(chaiscript::user_type<glm::quat>(), "quat");
@@ -366,42 +362,30 @@ inline void SetQuat(ChaiScript* chaiscript)
 	chaiscript->add(chaiscript::fun([](const glm::quat& a, const glm::quat& b) { return a != b; }), "!=");
 
 	// Quaternion-specific operations
-	chaiscript->add(chaiscript::fun(static_cast<glm::quat(*)(const glm::quat&)>(glm::conjugate)), "conjugate");
-	chaiscript->add(chaiscript::fun(static_cast<glm::quat(*)(const glm::quat&)>(glm::inverse)), "inverse");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::quat&)>(glm::length)), "length");
-	chaiscript->add(chaiscript::fun(static_cast<glm::quat(*)(const glm::quat&)>(glm::normalize)), "normalize");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::quat&, const glm::quat&)>(glm::dot)), "dot");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::quat&)>(glm::angle)), "angle");
-	chaiscript->add(chaiscript::fun(static_cast<vec3 (*)(const glm::quat&)>(glm::axis)), "axis");
+	chaiscript->add(chaiscript::fun(static_cast<glm::quat(*)(const glm::quat&)>(&glm::conjugate)), "conjugate");
+	chaiscript->add(chaiscript::fun(static_cast<glm::quat(*)(const glm::quat&)>(&glm::inverse)), "inverse");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::quat&)>(&glm::length)), "length");
+	chaiscript->add(chaiscript::fun(static_cast<glm::quat(*)(const glm::quat&)>(&glm::normalize)), "normalize");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::quat&, const glm::quat&)>(&glm::dot)), "dot");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(const glm::quat&)>(&glm::angle)), "angle");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3 (*)(const glm::quat&)>(&glm::axis)), "axis");
 	chaiscript->add(chaiscript::fun([](float angle, const glm::vec3& axis) { return glm::angleAxis(angle, axis); }), "angleAxis");
-	
 	// Roll, Pitch, Yaw (extracted from eulerAngles)
 	chaiscript->add(chaiscript::fun([](const glm::quat& q) { return glm::roll(q); }), "roll");
 	chaiscript->add(chaiscript::fun([](const glm::quat& q) { return glm::pitch(q); }), "pitch");
 	chaiscript->add(chaiscript::fun([](const glm::quat& q) { return glm::yaw(q); }), "yaw");
-	
 	// Rotate a vector by a quaternion
 	chaiscript->add(chaiscript::fun([](const glm::quat& q, float angle, const glm::vec3& axis) { return glm::rotate(q, angle, axis); }), "rotate");
-	
 	// Extract Euler angles (roll, pitch, yaw) from a quaternion
 	chaiscript->add(chaiscript::fun([](const glm::quat& q) { return glm::eulerAngles(q); }), "eulerAngles");
-	
 	// Spherical and linear interpolation (slerp, lerp)
-	chaiscript->add(chaiscript::fun(static_cast<glm::quat(*)(const glm::quat&, const glm::quat&, float)>(glm::slerp)), "slerp");
-	chaiscript->add(chaiscript::fun(static_cast<glm::quat(*)(const glm::quat&, const glm::quat&, float)>(glm::lerp)), "lerp");
-	
-	// Convert to string
-	chaiscript->add(chaiscript::fun([](const glm::quat& q) -> std::string { return "quat("
-		+ std::to_string(q.x) + ", "
-		+ std::to_string(q.y) + ", "
-		+ std::to_string(q.z) + ", "
-		+ std::to_string(q.w) + ")"; }),
-		"to_string");
+	chaiscript->add(chaiscript::fun(static_cast<glm::quat(*)(const glm::quat&, const glm::quat&, float)>(&glm::slerp)), "slerp");
+	chaiscript->add(chaiscript::fun(static_cast<glm::quat(*)(const glm::quat&, const glm::quat&, float)>(&glm::lerp)), "lerp");
 }
 
-inline void SetMat4(ChaiScript* chaiscript)
+inline void SetMat4(chaiscript::ChaiScript* chaiscript)
 {
-	// Registering glm::mat4 and related functions to ChaiScript
+	// Registering mat4 and related functions to ChaiScript
 	chaiscript->add(chaiscript::user_type<glm::mat4>(), "mat4");
 	chaiscript->add(chaiscript::constructor<glm::mat4()>(), "mat4");
 	// Matrix constructors
@@ -434,17 +418,23 @@ inline void SetMat4(ChaiScript* chaiscript)
 
 	// Other transformations
 	chaiscript->add(chaiscript::fun(static_cast<glm::mat4(*)(float, float, float, float)>(&glm::perspective)), "perspective");
+	chaiscript->add(chaiscript::fun(static_cast<glm::mat4(*)(float, float, float, float, float, float)>(&glm::ortho)), "ortho");
 	chaiscript->add(chaiscript::fun(static_cast<glm::mat4(*)(float, float, float, float)>(&glm::ortho)), "ortho");
 	chaiscript->add(chaiscript::fun(static_cast<glm::mat4(*)(const glm::vec3&, const glm::vec3&, const glm::vec3&)>(&glm::lookAt)), "lookAt");
 	chaiscript->add(chaiscript::fun(static_cast<glm::mat4(*)(float, float, float, float, float, float)>(&glm::frustum)), "frustum");
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3(*)(const glm::vec3&, const glm::mat4&, const glm::mat4&, const glm::vec4&)>(&glm::unProject)), "unProject");
 }
 
-inline void SetGlmTypes(ChaiScript* chaiscript)
+inline void SetGlmTypes(chaiscript::ChaiScript* chaiscript)
 {
+	SetGlmConstants(chaiscript);
+
+	SetScalar(chaiscript);
+
 	SetVec2(chaiscript);
 	SetVec3(chaiscript);
 	SetVec4(chaiscript);
 	SetQuat(chaiscript);
-	SetScalar(chaiscript);
+
 	SetMat4(chaiscript);
 }

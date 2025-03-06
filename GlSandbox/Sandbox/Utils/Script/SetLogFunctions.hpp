@@ -9,10 +9,6 @@
 #include "../../../Log/loguru.hpp"
 #include <glm/gtx/string_cast.hpp>
 
-using namespace chaiscript;
-using namespace glm;
-using namespace std;
-
 // Text types
 
 inline void printl(const std::string& message)
@@ -749,130 +745,126 @@ inline void printl(const glm::umat4x3& value)
         value[3][0], value[3][1], value[3][2]);
 }
 
-inline void SetLogFunctions(ChaiScript* chaiscript)
+inline void SetLogFunctions(chaiscript::ChaiScript* chaiscript)
 {
 	// LOGGING functions
 
     // C++ primitive types
 
 	// Text
-	chaiscript->add(fun(static_cast<void (*) (const string&)>(printl)), "printl");
-	chaiscript->add(fun(static_cast<void (*) (const char*)>(printl)), "printl");
+	chaiscript->add(chaiscript::fun(static_cast<void (*) (const std::string&)>(&printl)), "printl");
+	chaiscript->add(chaiscript::fun(static_cast<void (*) (const char*)>(&printl)), "printl");
 
 	// C++ types
 
     // Bool
-    chaiscript->add(fun(static_cast<void (*) (const bool)>(printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*) (const bool)>(&printl)), "printl");
 
 	// Float
-	chaiscript->add(fun(static_cast<void (*) (const float)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*) (const double&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*) (const long double&)>(printl)), "printl");
+	chaiscript->add(chaiscript::fun(static_cast<void (*) (const float)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*) (const double&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*) (const long double&)>(&printl)), "printl");
 
     // Integer
-    chaiscript->add(fun(static_cast<void (*)(const int)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const unsigned int)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const short)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const unsigned short)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const long)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const unsigned long)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const long long&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const unsigned long long&)>(printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const int)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const unsigned int)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const short)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const unsigned short)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const long)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const unsigned long)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const long long&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const unsigned long long&)>(&printl)), "printl");
 
     // Char
-    chaiscript->add(fun(static_cast<void (*)(const char)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const unsigned char)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const char16_t&)>(printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const char)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const unsigned char)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const char16_t&)>(&printl)), "printl");
 
     // GLM types
 
     // vec2
-	chaiscript->add(fun(static_cast<void (*) (const const vec2&)>(printl)), "printl");
-	chaiscript->add(fun(static_cast<void (*) (const const dvec2&)>(printl)), "printl");
-	chaiscript->add(fun(static_cast<void (*) (const const bvec2&)>(printl)), "printl");
-	chaiscript->add(fun(static_cast<void (*) (const const ivec2&)>(printl)), "printl");
-	chaiscript->add(fun(static_cast<void (*) (const const uvec2&)>(printl)), "printl");
+	chaiscript->add(chaiscript::fun(static_cast<void (*) (const glm::vec2&)>(&printl)), "printl");
+	chaiscript->add(chaiscript::fun(static_cast<void (*) (const glm::dvec2&)>(&printl)), "printl");
+	chaiscript->add(chaiscript::fun(static_cast<void (*) (const glm::bvec2&)>(&printl)), "printl");
+	chaiscript->add(chaiscript::fun(static_cast<void (*) (const glm::ivec2&)>(&printl)), "printl");
+	chaiscript->add(chaiscript::fun(static_cast<void (*) (const glm::uvec2&)>(&printl)), "printl");
 
     // vec3
-	chaiscript->add(fun(static_cast<void (*) (const const vec3&)>(printl)), "printl");
-	chaiscript->add(fun(static_cast<void (*) (const const dvec3&)>(printl)), "printl");
-	chaiscript->add(fun(static_cast<void (*) (const const bvec3&)>(printl)), "printl");
-	chaiscript->add(fun(static_cast<void (*) (const const ivec3&)>(printl)), "printl");
-	chaiscript->add(fun(static_cast<void (*) (const const uvec3&)>(printl)), "printl");
+	chaiscript->add(chaiscript::fun(static_cast<void (*) (const glm::vec3&)>(&printl)), "printl");
+	chaiscript->add(chaiscript::fun(static_cast<void (*) (const glm::dvec3&)>(&printl)), "printl");
+	chaiscript->add(chaiscript::fun(static_cast<void (*) (const glm::bvec3&)>(&printl)), "printl");
+	chaiscript->add(chaiscript::fun(static_cast<void (*) (const glm::ivec3&)>(&printl)), "printl");
+	chaiscript->add(chaiscript::fun(static_cast<void (*) (const glm::uvec3&)>(&printl)), "printl");
 
     // vec4
-	chaiscript->add(fun(static_cast<void (*) (const const vec4&)>(printl)), "printl");
-	chaiscript->add(fun(static_cast<void (*) (const const dvec4&)>(printl)), "printl");
-	chaiscript->add(fun(static_cast<void (*) (const const bvec4&)>(printl)), "printl");
-	chaiscript->add(fun(static_cast<void (*) (const const ivec4&)>(printl)), "printl");
-	chaiscript->add(fun(static_cast<void (*) (const const uvec4&)>(printl)), "printl");
+	chaiscript->add(chaiscript::fun(static_cast<void (*) (const glm::vec4&)>(&printl)), "printl");
+	chaiscript->add(chaiscript::fun(static_cast<void (*) (const glm::dvec4&)>(&printl)), "printl");
+	chaiscript->add(chaiscript::fun(static_cast<void (*) (const glm::bvec4&)>(&printl)), "printl");
+	chaiscript->add(chaiscript::fun(static_cast<void (*) (const glm::ivec4&)>(&printl)), "printl");
+	chaiscript->add(chaiscript::fun(static_cast<void (*) (const glm::uvec4&)>(&printl)), "printl");
 
     // quaternion
-	chaiscript->add(fun(static_cast<void (*) (const const quat&)>(printl)), "printl");
-	chaiscript->add(fun(static_cast<void (*) (const const dquat&)>(printl)), "printl");
+	chaiscript->add(chaiscript::fun(static_cast<void (*) (const glm::quat&)>(&printl)), "printl");
+	chaiscript->add(chaiscript::fun(static_cast<void (*) (const glm::dquat&)>(&printl)), "printl");
 
     // Matrices
 
     // mat2
-    chaiscript->add(fun(static_cast<void (*)(const glm::mat2&)>(printl)), "printl");
-    //chaiscript->add(fun(static_cast<void (*)(const glm::mat2x2&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::mat2x3&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::mat2x4&)>(printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::mat2&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::mat2x3&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::mat2x4&)>(&printl)), "printl");
+                       
+    // mat3                                       
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::mat3&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::mat3x2&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::mat3x4&)>(&printl)), "printl");
+                                                  
+    // mat4                                        
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::mat4&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::mat4x2&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::mat4x3&)>(&printl)), "printl");
+                                                  
+    // dmat2                                       
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::dmat2&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::dmat2x3&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::dmat2x4&)>(&printl)), "printl");
+                                                
+    // dmat3                                  
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::dmat3&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::dmat3x2&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::dmat3x4&)>(&printl)), "printl");
+                                              
+    // dmat4                                      
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::dmat4&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::dmat4x2&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::dmat4x3&)>(&printl)), "printl");
+                                                  
+    // imat2
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::imat2x2&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::imat2x3&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::imat2x4&)>(&printl)), "printl");
+              
+    // imat3
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::imat3x2&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::imat3x3&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::imat3x4&)>(&printl)), "printl");
 
-    // mat3
-    chaiscript->add(fun(static_cast<void (*)(const glm::mat3&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::mat3x2&)>(printl)), "printl");
-    //chaiscript->add(fun(static_cast<void (*)(const glm::mat3x3&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::mat3x4&)>(printl)), "printl");
-
-    // mat4
-    chaiscript->add(fun(static_cast<void (*)(const glm::mat4&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::mat4x2&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::mat4x3&)>(printl)), "printl");
-    //chaiscript->add(fun(static_cast<void (*)(const glm::mat4x4&)>(printl)), "printl");
-
-    // dmat2
-    chaiscript->add(fun(static_cast<void (*)(const glm::dmat2&)>(printl)), "printl");
-    //chaiscript->add(fun(static_cast<void (*)(const glm::dmat2x2&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::dmat2x3&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::dmat2x4&)>(printl)), "printl");
-
-    // dmat3
-    chaiscript->add(fun(static_cast<void (*)(const glm::dmat3&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::dmat3x2&)>(printl)), "printl");
-    //chaiscript->add(fun(static_cast<void (*)(const glm::dmat3x3&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::dmat3x4&)>(printl)), "printl");
-
-    // dmat4
-    chaiscript->add(fun(static_cast<void (*)(const glm::dmat4&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::dmat4x2&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::dmat4x3&)>(printl)), "printl");
-    //chaiscript->add(fun(static_cast<void (*)(const glm::dmat4x4&)>(printl)), "printl");
-
-    // imat
-    chaiscript->add(fun(static_cast<void (*)(const glm::imat2x2&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::imat2x3&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::imat2x4&)>(printl)), "printl");
-
-    chaiscript->add(fun(static_cast<void (*)(const glm::imat3x2&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::imat3x3&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::imat3x4&)>(printl)), "printl");
-
-    chaiscript->add(fun(static_cast<void (*)(const glm::imat4x2&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::imat4x3&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::imat4x4&)>(printl)), "printl");
-
-    // umat
-    chaiscript->add(fun(static_cast<void (*)(const glm::umat2x2&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::umat2x3&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::umat2x4&)>(printl)), "printl");
-
-    chaiscript->add(fun(static_cast<void (*)(const glm::umat3x2&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::umat3x3&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::umat3x4&)>(printl)), "printl");
-
-    chaiscript->add(fun(static_cast<void (*)(const glm::umat4x2&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::umat4x3&)>(printl)), "printl");
-    chaiscript->add(fun(static_cast<void (*)(const glm::umat4x4&)>(printl)), "printl");
+    // imat4
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::imat4x2&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::imat4x3&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::imat4x4&)>(&printl)), "printl");
+                                                   
+    // umat                                       
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::umat2x2&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::umat2x3&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::umat2x4&)>(&printl)), "printl");
+                                               
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::umat3x2&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::umat3x3&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::umat3x4&)>(&printl)), "printl");
+                                                 
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::umat4x2&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::umat4x3&)>(&printl)), "printl");
+    chaiscript->add(chaiscript::fun(static_cast<void (*)(const glm::umat4x4&)>(&printl)), "printl");
 
 }
