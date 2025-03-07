@@ -2,8 +2,15 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #define GLM_FORCE_SWIZZLE
 #include <glm/glm.hpp>
+#include <glm/gtc/random.hpp>
+#include <glm/gtc/round.hpp>
+#include <glm/gtc/reciprocal.hpp>
 #include <glm/gtc/constants.hpp>
 #include <glm/gtc/quaternion.hpp>
+#include <glm/gtx/fast_exponential.hpp>
+#include <glm/gtx/fast_square_root.hpp>
+#include <glm/gtx/fast_trigonometry.hpp>
+#include <glm/gtx/functions.hpp>
 #include <chaiscript/chaiscript.hpp>
 #include <string>
 #include <stddef.h>
@@ -41,54 +48,218 @@ inline void SetGlmConstants(chaiscript::ChaiScript* chaiscript)
 	chaiscript->add(chaiscript::fun(&glm::zero<float>), "zero");
 }
 
-inline void SetScalar(chaiscript::ChaiScript* chaiscript)
+inline void SetFloatScalar(chaiscript::ChaiScript* chaiscript)
 {
-	////scalar
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::max)), "max");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::min)), "min");
+	// Common functions - CORE - #include <glm/glm.hpp>
 	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::abs)), "abs");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::sign)), "sign");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::floor)), "floor");
 	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::ceil)), "ceil");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::round)), "round");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::trunc)), "trunc");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::fract)), "fract");
-	// Math
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::sqrt)), "sqrt");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::inversesqrt)), "inversesqrt");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::exp)), "exp");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::log)), "log");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::exp2)), "exp2");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::log2)), "log2");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::pow)), "pow");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float, float)>(&glm::clamp)), "clamp");
+	chaiscript->add(chaiscript::fun(static_cast<int	(*)(float)>(&glm::floatBitsToInt)), "floatBitsToInt");
+	chaiscript->add(chaiscript::fun(static_cast<unsigned int (*)(float)>(&glm::floatBitsToUint)), "floatBitsToUint");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::floor)), "floor");
 	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float, float)>(&glm::fma)), "fma");
-	// Angle type conversion
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::degrees)), "degrees");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::radians)), "radians");
-	// Trigonometry
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::sin)), "sin");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::cos)), "cos");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::tan)), "tan");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::asin)), "asin");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::acos)), "acos");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::atan)), "atan");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::atan)), "atan");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::sinh)), "sinh");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::cosh)), "cosh");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::tanh)), "tanh");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::asin)), "asinh");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::acos)), "acosh");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::atan)), "atanh");
-	// Utility
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::fract)), "fract");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, int&)>(&glm::frexp)), "frexp");
 	chaiscript->add(chaiscript::fun(static_cast<bool (*)(float)>(&glm::isnan)), "isnan");
 	chaiscript->add(chaiscript::fun(static_cast<bool (*)(float)>(&glm::isinf)), "isinf");
-	// Other
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::mod)), "mod");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::step)), "step");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float, float)>(&glm::smoothstep)), "smoothstep");
-	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float, float)>(&glm::clamp)), "clamp");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(const float&, const int&)>(&glm::ldexp)), "ldexp");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::max)), "max");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::min)), "min");
 	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float, float)>(&glm::mix)), "mix");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::mod)), "mod");
+	chaiscript->add(chaiscript::fun([](const float& x, float& i) { return glm::modf(x, i); }), "modf"); // coldn't static cast
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::round)), "round");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::roundEven)), "roundEven");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::sign)), "sign");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float, float)>(&glm::smoothstep)), "smoothstep");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::step)), "step");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::trunc)), "trunc");
+
+	// Exponential functions - CORE - #include <glm/glm.hpp>
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::exp)), "exp");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::exp2)), "exp2");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::inversesqrt)), "inversesqrt");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::log)), "log");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::log2)), "log2");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::pow)), "pow");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::sqrt)), "sqrt");
+
+	// Geometric functions - CORE - #include <glm/glm.hpp>
+	chaiscript->add(chaiscript::fun([](float a, float b) { return glm::distance(a, b); }), "distance"); // couln't static cast.
 	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::dot)), "dot");
+	chaiscript->add(chaiscript::fun(static_cast<float(*)(float)>(&glm::length)), "length");
+
+	// Angle and trigonometry functions - CORE - #include <glm/glm.hpp>
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::acos)), "acos");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::acos)), "acosh");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::asin)), "asin");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::asin)), "asinh");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::atan)), "atan");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::atan)), "atan");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::atan)), "atanh");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::cos)), "cos");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::cosh)), "cosh");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::degrees)), "degrees");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::radians)), "radians");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::sin)), "sin");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::sinh)), "sinh");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::tan)), "tan");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::tanh)), "tanh");
+
+	// Random - Recommended extensions - #include <glm/gtc/random.hpp>
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::gaussRand)), "gaussRand");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::linearRand)), "linearRand");
+
+	// Round - Recommended extensions - #include <glm/gtc/round.hpp>
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::ceilMultiple)), "ceilMultiple");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::floorMultiple)), "floorMultiple");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::roundMultiple)), "roundMultiple");
+
+	// Reciprocal functions - Recommended extensions - #include <glm/gtc/reciprocal.hpp>
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::acot)), "acot");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::acoth)), "acoth");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::acsc)), "acsc");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::acsch)), "acsch");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::asec)), "asec");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::asech)), "asech");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::cot)), "cot");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::coth)), "coth");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::csc)), "csc");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::csch)), "csch");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::sec)), "sec");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::sech)), "sech");
+
+	// Fast exponential
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::fastExp)), "fastExp");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::fastExp2)), "fastExp2");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::fastLog)), "fastLog");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::fastLog2)), "fastLog2");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::fastPow)), "fastPow");
+
+	// Fast square root
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::fastDistance)), "fastDistance");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::fastInverseSqrt)), "fastInverseSqrt");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::fastLength)), "fastLength");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::fastSqrt)), "fastSqrt");
+	
+	// Fast trignommetry
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::fastAcos)), "fastAcos");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::fastAsin)), "fastAsin");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float)>(&glm::fastAtan)), "fastAtan");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::fastAtan)), "fastAtanSingle");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::fastCos)), "fastCos");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::fastSin)), "fastSin");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::fastTan)), "fastTan");
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float)>(&glm::wrapAngle)), "wrapAngle");
+
+	// 1D gauss function
+	chaiscript->add(chaiscript::fun(static_cast<float (*)(float, float, float)>(&glm::gauss)), "gauss");
+}
+
+inline void SetDoubleScalar(chaiscript::ChaiScript* chaiscript)
+{
+	// Common functions - CORE - #include <glm/glm.hpp>
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::abs)), "abs");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::ceil)), "ceil");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double, double, double)>(&glm::clamp)), "clamp");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::floor)), "floor");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double, double, double)>(&glm::fma)), "fma");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::fract)), "fract");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double, int&)>(&glm::frexp)), "frexp");
+	chaiscript->add(chaiscript::fun(static_cast<bool (*)(double)>(&glm::isnan)), "isnan");
+	chaiscript->add(chaiscript::fun(static_cast<bool (*)(double)>(&glm::isinf)), "isinf");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(const double&, const int&)>(&glm::ldexp)), "ldexp");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double, double)>(&glm::max)), "max");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double, double)>(&glm::min)), "min");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double, double, double)>(&glm::mix)), "mix");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double, double)>(&glm::mod)), "mod");
+	chaiscript->add(chaiscript::fun([](const double& x, double& i) { return glm::modf(x, i); }), "modf"); // coldn't static cast
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::round)), "round");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::roundEven)), "roundEven");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::sign)), "sign");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double, double, double)>(&glm::smoothstep)), "smoothstep");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double, double)>(&glm::step)), "step");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::trunc)), "trunc");
+
+	// Exponential functions - CORE - #include <glm/glm.hpp>
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::exp)), "exp");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::exp2)), "exp2");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::inversesqrt)), "inversesqrt");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::log)), "log");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::log2)), "log2");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double, double)>(&glm::pow)), "pow");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::sqrt)), "sqrt");
+
+	// Geometric functions - CORE - #include <glm/glm.hpp>
+	chaiscript->add(chaiscript::fun([](double a, double b) { return glm::distance(a, b); }), "distance"); // couln't static cast.
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double, double)>(&glm::dot)), "dot");
+	chaiscript->add(chaiscript::fun(static_cast<double(*)(double)>(&glm::length)), "length");
+
+	// Angle and trigonometry functions - CORE - #include <glm/glm.hpp>
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::acos)), "acos");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::acos)), "acosh");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::asin)), "asin");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::asin)), "asinh");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::atan)), "atan");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double, double)>(&glm::atan)), "atan");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::atan)), "atanh");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::cos)), "cos");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::cosh)), "cosh");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::degrees)), "degrees");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::radians)), "radians");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::sin)), "sin");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::sinh)), "sinh");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::tan)), "tan");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::tanh)), "tanh");
+
+	// Random - Recommended extensions - #include <glm/gtc/random.hpp>
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double, double)>(&glm::gaussRand)), "gaussRand");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double, double)>(&glm::linearRand)), "linearRand");
+
+	// Round - Recommended extensions - #include <glm/gtc/round.hpp>
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double, double)>(&glm::ceilMultiple)), "ceilMultiple");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double, double)>(&glm::floorMultiple)), "floorMultiple");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double, double)>(&glm::roundMultiple)), "roundMultiple");
+
+	// Reciprocal functions - Recommended extensions - #include <glm/gtc/reciprocal.hpp>
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::acot)), "acot");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::acoth)), "acoth");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::acsc)), "acsc");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::acsch)), "acsch");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::asec)), "asec");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::asech)), "asech");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::cot)), "cot");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::coth)), "coth");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::csc)), "csc");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::csch)), "csch");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::sec)), "sec");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::sech)), "sech");
+
+	// Fast exponential
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::fastExp)), "fastExp");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::fastExp2)), "fastExp2");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::fastLog)), "fastLog");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::fastLog2)), "fastLog2");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double, double)>(&glm::fastPow)), "fastPow");
+
+	// Fast square root
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double, double)>(&glm::fastDistance)), "fastDistance");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::fastInverseSqrt)), "fastInverseSqrt");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::fastLength)), "fastLength");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::fastSqrt)), "fastSqrt");
+
+	// Fast trignommetry
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::fastAcos)), "fastAcos");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::fastAsin)), "fastAsin");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double, double)>(&glm::fastAtan)), "fastAtan");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::fastAtan)), "fastAtanSingle");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::fastCos)), "fastCos");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::fastSin)), "fastSin");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::fastTan)), "fastTan");
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double)>(&glm::wrapAngle)), "wrapAngle");
+
+	// 1D gauss function
+	chaiscript->add(chaiscript::fun(static_cast<double (*)(double, double, double)>(&glm::gauss)), "gauss");
 }
 
 inline void SetVec2(chaiscript::ChaiScript* chaiscript)
@@ -101,6 +272,9 @@ inline void SetVec2(chaiscript::ChaiScript* chaiscript)
 	chaiscript->add(chaiscript::constructor<glm::vec2(float, float)>(), "vec2");
 	chaiscript->add(chaiscript::constructor<glm::vec2(const glm::vec2&)>(), "vec2");
 	chaiscript->add(chaiscript::constructor<glm::vec2()>(), "vec2");
+
+	// Assignment
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec2 & (glm::vec2::*)(const glm::vec2&)>(&glm::vec2::operator=)), "=");
 
 	// Member access
 	chaiscript->add(chaiscript::fun(&glm::vec2::x), "x");
@@ -178,6 +352,9 @@ inline void SetVec3(chaiscript::ChaiScript* chaiscript)
 	chaiscript->add(chaiscript::constructor<glm::vec3(float, float, float)>(), "vec3");
 	chaiscript->add(chaiscript::constructor<glm::vec3(const glm::vec3&)>(), "vec3");
 	chaiscript->add(chaiscript::constructor<glm::vec3()>(), "vec3");
+
+	// Assignment
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec3 & (glm::vec3::*)(const glm::vec3&)>(&glm::vec3::operator=)), "=");
 
 	// Member access
 	chaiscript->add(chaiscript::fun(&glm::vec3::x), "x");
@@ -257,6 +434,9 @@ inline void SetVec4(chaiscript::ChaiScript* chaiscript)
 	chaiscript->add(chaiscript::constructor<glm::vec4(float, float, float, float)>(), "vec4");
 	chaiscript->add(chaiscript::constructor<glm::vec4(const glm::vec4&)>(), "vec4");
 	chaiscript->add(chaiscript::constructor<glm::vec4()>(), "vec4");
+	
+	// Assignment
+	chaiscript->add(chaiscript::fun(static_cast<glm::vec4 & (glm::vec4::*)(const glm::vec4&)>(&glm::vec4::operator=)), "=");
 
 	// Member access
 	chaiscript->add(chaiscript::fun(&glm::vec4::x), "x");
@@ -335,6 +515,9 @@ inline void SetQuat(chaiscript::ChaiScript* chaiscript)
 	chaiscript->add(chaiscript::constructor<glm::quat()>(), "quat");
 	chaiscript->add(chaiscript::constructor<glm::quat(float, float, float, float)>(), "quat");
 	chaiscript->add(chaiscript::constructor<glm::quat(const glm::quat&)>(), "quat");
+	
+	// Assignment
+	chaiscript->add(chaiscript::fun(static_cast<glm::quat & (glm::quat::*)(const glm::quat&)>(&glm::quat::operator=)), "=");
 
 	// Member access
 	chaiscript->add(chaiscript::fun(&glm::quat::x), "x");
@@ -388,11 +571,15 @@ inline void SetMat4(chaiscript::ChaiScript* chaiscript)
 	// Registering mat4 and related functions to ChaiScript
 	chaiscript->add(chaiscript::user_type<glm::mat4>(), "mat4");
 	chaiscript->add(chaiscript::constructor<glm::mat4()>(), "mat4");
+
 	// Matrix constructors
 	chaiscript->add(chaiscript::fun([](float diagonal) { return glm::mat4(diagonal); }), "mat4");
 	chaiscript->add(chaiscript::fun([](const glm::vec4& col1, const glm::vec4& col2, const glm::vec4& col3, const glm::vec4& col4) {
 		return glm::mat4(col1, col2, col3, col4);
 		}), "mat4");
+
+	// Assignment
+	chaiscript->add(chaiscript::fun(static_cast<glm::mat4 & (glm::mat4::*)(const glm::mat4&)>(&glm::mat4::operator=)), "=");
 
 	// Matrix operations
 	chaiscript->add(chaiscript::fun([](const glm::mat4& m1, const glm::mat4& m2) { return m1 * m2; }), "*");
@@ -429,7 +616,8 @@ inline void SetGlmTypes(chaiscript::ChaiScript* chaiscript)
 {
 	SetGlmConstants(chaiscript);
 
-	SetScalar(chaiscript);
+	SetFloatScalar(chaiscript);
+	SetDoubleScalar(chaiscript);
 
 	SetVec2(chaiscript);
 	SetVec3(chaiscript);
